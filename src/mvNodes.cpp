@@ -186,8 +186,7 @@ void mvNodeEditor::draw(ImDrawList* drawlist, float x, float y)
 
     }
 
-    //ImNodes::PushAttributeFlag(ImNodesAttributeFlags_EnableLinkDetachWithDragClick);
-    ImNodes::PushAttributeFlag(ImNodesAttributeFlags_None);
+    // No attribute flags need to be pushed for the editor; rely on defaults.
 
     ImNodesIO& io = ImNodes::GetIO();
     io.LinkDetachWithModifierClick.Modifier = &ImGui::GetIO().KeyCtrl;
@@ -233,7 +232,14 @@ void mvNodeEditor::draw(ImDrawList* drawlist, float x, float y)
         ImNodes::MiniMap(0.2f, _minimapLocation);
     }
     ImNodes::EndNodeEditor();
-    ImNodes::PopAttributeFlag();
+    // -------------------------------------------------------------------------
+    // ADD-ON FOR ZOOM SUPPORT. See https://github.com/Nelarius/imnodes/pull/192
+    // -------------------------------------------------------------------------
+    if (ImNodes::IsEditorHovered() && ImGui::GetIO().MouseWheel != 0.0f) {
+        float zoom = ImNodes::EditorContextGetZoom() + ImGui::GetIO().MouseWheel * 0.10f;
+        ImNodes::EditorContextSetZoom(zoom, ImGui::GetMousePos());
+    }
+    // No attribute flags were pushed, nothing to pop.
 
     // post draw for links
     for (auto& item : childslots[0])

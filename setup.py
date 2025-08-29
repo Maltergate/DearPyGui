@@ -9,7 +9,7 @@ import sys
 import shutil
 import subprocess
 
-wip_version = "2.1.0"
+wip_version = "2.1.1"
 
 def version_number():
     """This function reads the version number which is populated by github actions"""
@@ -81,7 +81,7 @@ class DPGBuildCommand(distutils.cmd.Command):
         command = ["mkdir cmake-build-local; "]
         command.append("cd cmake-build-local; ")
         command.append('cmake .. -DMVDIST_ONLY=True -DMVDPG_VERSION='+version_number()+ " -DMV_PY_VERSION="+ str(sys.version_info[0]) + "." + str(sys.version_info[1])+"; ")
-        command.append("cd ..; cmake --build cmake-build-local --config Release")
+        command.append("cd ..; cmake --build cmake-build-local --config Release -j")
         self.announce('Running command: %s' % "Dear PyGui Build for Linux",level=distutils.log.INFO)
         subprocess.check_call(''.join(command), shell=True)
         src_path = os.path.dirname(os.path.abspath(__file__))
@@ -91,7 +91,7 @@ class DPGBuildCommand(distutils.cmd.Command):
         command = ["mkdir cmake-build-local; "]
         command.append("cd cmake-build-local; ")
         command.append('cmake .. -DMVDIST_ONLY=True -DMVDPG_VERSION='+version_number()+ " -DMV_PY_VERSION="+ str(sys.version_info[0]) + "." + str(sys.version_info[1])+"; ")
-        command.append("cd ..; cmake --build cmake-build-local --config Release")
+        command.append("cd ..; cmake --build cmake-build-local --config Release -j")
         self.announce('Running command: %s' % "Dear PyGui Build for OS X",level=distutils.log.INFO)
         subprocess.check_call(''.join(command), shell=True)
         src_path = os.path.dirname(os.path.abspath(__file__))
