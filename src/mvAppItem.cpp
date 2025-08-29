@@ -3112,6 +3112,9 @@ DearPyGui::GetEntityParser(mvAppItemType type)
         args.push_back({ mvPyDataType::Bool, "menubar", mvArgType::KEYWORD_ARG, "False", "Shows or hides the menubar." });
         args.push_back({ mvPyDataType::Bool, "minimap", mvArgType::KEYWORD_ARG, "False", "Shows or hides the Minimap. New in 1.6." });
         args.push_back({ mvPyDataType::Integer, "minimap_location", mvArgType::KEYWORD_ARG, "2", "mvNodeMiniMap_Location_* constants. New in 1.6." });
+    args.push_back({ mvPyDataType::Float, "zoom_speed", mvArgType::KEYWORD_ARG, "0.10", "Mouse wheel zoom sensitivity (scale per wheel unit)." });
+    args.push_back({ mvPyDataType::Bool, "reset_zoom_on_double_click", mvArgType::KEYWORD_ARG, "False", "Enable double-click to reset zoom." });
+    args.push_back({ mvPyDataType::Integer, "reset_zoom_mouse_button", mvArgType::KEYWORD_ARG, "2", "Mouse button for reset (ImGuiMouseButton_*, default middle=2)." });
 
         setup.about = "Adds a node editor.";
         setup.category = { "Node Editor", "Containers", "Widgets" };

@@ -72,6 +72,9 @@ void mvNodeEditor::handleSpecificKeywordArgs(PyObject* dict)
 
     if (PyObject* item = PyDict_GetItemString(dict, "minimap")) _minimap = ToBool(item);
     if (PyObject* item = PyDict_GetItemString(dict, "minimap_location")) _minimapLocation = ToInt(item);
+    if (PyObject* item = PyDict_GetItemString(dict, "zoom_speed")) _zoomSpeed = (float)ToDouble(item);
+    if (PyObject* item = PyDict_GetItemString(dict, "reset_zoom_on_double_click")) _resetZoomOnDoubleClick = ToBool(item);
+    if (PyObject* item = PyDict_GetItemString(dict, "reset_zoom_mouse_button")) _resetZoomMouseButton = ToInt(item);
 }
 
 void mvNodeEditor::getSpecificConfiguration(PyObject* dict)
@@ -98,6 +101,9 @@ void mvNodeEditor::getSpecificConfiguration(PyObject* dict)
 
     PyDict_SetItemString(dict, "minimap", mvPyObject(ToPyBool(_minimap)));
     PyDict_SetItemString(dict, "minimap_location", mvPyObject(ToPyInt(_minimapLocation)));
+    PyDict_SetItemString(dict, "zoom_speed", mvPyObject(ToPyFloat(_zoomSpeed)));
+    PyDict_SetItemString(dict, "reset_zoom_on_double_click", mvPyObject(ToPyBool(_resetZoomOnDoubleClick)));
+    PyDict_SetItemString(dict, "reset_zoom_mouse_button", mvPyObject(ToPyInt(_resetZoomMouseButton)));
 }
 
 void mvNodeEditor::onChildRemoved(std::shared_ptr<mvAppItem> item)
@@ -236,8 +242,16 @@ void mvNodeEditor::draw(ImDrawList* drawlist, float x, float y)
     // ADD-ON FOR ZOOM SUPPORT. See https://github.com/Nelarius/imnodes/pull/192
     // -------------------------------------------------------------------------
     if (ImNodes::IsEditorHovered() && ImGui::GetIO().MouseWheel != 0.0f) {
-        float zoom = ImNodes::EditorContextGetZoom() + ImGui::GetIO().MouseWheel * 0.10f;
+        float zoom = ImNodes::EditorContextGetZoom() + ImGui::GetIO().MouseWheel * _zoomSpeed;
         ImNodes::EditorContextSetZoom(zoom, ImGui::GetMousePos());
+    }
+    if (_resetZoomOnDoubleClick && ImNodes::IsEditorHovered()) {
+        if (ImGui::IsMouseDoubleClicked(_resetZoomMouseButton)) {
+            // Reset zoom to 1.0 and re-center based on current mouse position
+            ImNodes::EditorContextSetZoom(1.0f, ImGui::GetMousePos());
+            // Optionally recenter panning to keep current mouse in place; the setter already
+            // adjusts panning relative to the centering pos.
+        }
     }
     // No attribute flags were pushed, nothing to pop.
 

@@ -112,4 +112,9 @@ private:
     bool                   _minimap = false;
     ImNodesMiniMapLocation _minimapLocation= ImNodesMiniMapLocation_TopLeft;
 
+    // Zoom configuration
+    float _zoomSpeed = 0.10f; // Mouse wheel sensitivity
+    bool  _resetZoomOnDoubleClick = false; // Optional reset shortcut
+    int   _resetZoomMouseButton = ImGuiMouseButton_Middle; // Default middle button
+
 };
