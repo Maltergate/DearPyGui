@@ -160,14 +160,12 @@ def setup_package():
             shutil.copy(src_path + "/thirdparty/Microsoft/vcruntime140_1.dll", src_path + "/output/dearpygui")
 
     metadata = dict(
-        name='dearpygui',                                      # Required
+        name='dearpygui-nodezoomfork',                         # Required
         version=version_number(),                              # Required
-        author="Jonathan Hoffstadt and Preston Cothren",       # Optional
-        author_email="jonathanhoffstadt@yahoo.com",            # Optional
-        description='DearPyGui: A simple Python GUI Toolkit',  # Required
+        description='DearPyGui Fork, with zoom in Nodes',      # Required
         long_description=long_description,                     # Optional
         long_description_content_type='text/markdown',         # Optional
-        url='https://github.com/hoffstadt/DearPyGui',          # Optional
+        url='https://github.com/Maltergate/DearPyGui',          # Optional
         license = 'MIT',
         python_requires='>=3.8',
         classifiers=[
